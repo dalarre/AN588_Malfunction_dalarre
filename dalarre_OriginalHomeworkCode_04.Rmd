@@ -236,7 +236,13 @@ log_longevity_brainsize2
 ```
 ```{r}
 
-## Me queda inferir a partir de 800 gramos desde la lineal y la del logaritmo, decidir cual es mejor y hacer lo de los 5 challenges encontrados.
+## Doesn't work because I established longevity as the predictor variable, so I can't use this linear model to predict it. I can predict Brain Size from longevity
+pi1 <- predict(m, newdata = data.frame(Brain_Size_Species_Mean = 800), interval = "prediction",
+    level = 0.9)  
+pi1
+
+
+## I think the logarithm model is better because the R-squared is higher and the PIs are tighter
 
 ```
 
