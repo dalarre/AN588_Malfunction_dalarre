@@ -236,11 +236,19 @@ log_longevity_brainsize2
 ```
 ```{r}
 
+#pi1 <- predict(m, newdata = data.frame(Brain_Size_Species_Mean = 800), interval = "prediction", level = 0.9)  
+#pi1
 ## Doesn't work because I established longevity as the predictor variable, so I can't use this linear model to predict it. I can predict Brain Size from longevity
-pi1 <- predict(m, newdata = data.frame(Brain_Size_Species_Mean = 800), interval = "prediction",
-    level = 0.9)  
-pi1
 
+## I am going to reverse the relationship in order to calculate the longevity
+
+m2 <- lm(MaxLongevity_m ~ Brain_Size_Species_Mean, data = d)
+
+pi2 <- predict(m2, newdata = data.frame(Brain_Size_Species_Mean = 800), interval = "prediction",
+    level = 0.9)  
+pi2
+
+## I don't trust too much this model to predict observations accurately for this value of the predictor variable because we don't have points in that range of values so you are not interpolating, you are extrapolating. Besides, the R-squared isn't to high and the PIs show that the value can fall in a range of 200 units.
 
 ## I think the logarithm model is better because the R-squared is higher and the PIs are tighter
 
