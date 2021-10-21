@@ -147,20 +147,21 @@ names(d)
 ## This loads the data
 
 ```
+
 ```{r}
 
 library(ggplot2)
 
-m <- lm(MaxLongevity_m ~ Brain_Size_Species_Mean, data = d)
+m <- lm(Brain_Size_Species_Mean ~ MaxLongevity_m, data = d)
 m
 ## With this I obtain the intercept and slope of the regrssion line
 
 ## This plots longevity against brain size
-longevity_brainsize <- ggplot(d, aes(MaxLongevity_m, Brain_Size_Species_Mean)) + geom_point(color = "darkgreen") + xlab("Longevity") + ylab("Brain size") + geom_smooth(method = lm) + geom_text(label = "y = 1.218*x + 248.952")
+longevity_brainsize <- ggplot(d, aes(MaxLongevity_m, Brain_Size_Species_Mean)) + geom_point(color = "darkgreen") + xlab("Longevity") + ylab("Brain size") + geom_smooth(method = lm) + annotate("text", x = 300, y = 400, label = "Brain Size = 0.40458*Longevity - 65.36266") ##https://ggplot2.tidyverse.org/reference/annotate.html#arguments
 
 longevity_brainsize
 
-## I don't know how to use geom_text to not put the ecuation on every point, help!
+
 
 
 l <- log(d$MaxLongevity_m) 
@@ -170,15 +171,14 @@ f <- cbind(d, l, b)
 head(f)
 names(f)
 
-n <- lm(l ~ b, data = f)
+n <- lm(b ~ l, data = f)
 n
 
 ## This plots log(longevity) against log(brain size)
-log_longevity_brainsize <- ggplot(d, aes(l, b)) + geom_point(color = "darkgreen") + xlab("log(Longevity)") + ylab("log(Brain size)") + geom_smooth(method = lm) + geom_text(label = "y = 0.2341*x + 4.8790")
+log_longevity_brainsize <- ggplot(f, aes(l, b)) + geom_point(color = "darkgreen") + xlab("log(Longevity)") + ylab("log(Brain size)") + geom_smooth(method = lm) + annotate("text", x = 5.5, y = 6, label = "log(Brain Size) = 2.4703*log(Longevity) - 10.5019") ##https://ggplot2.tidyverse.org/reference/annotate.html#arguments
 
 log_longevity_brainsize
 
-## Same problem as before, I dont know how to use geom_text
 
 
 ```
@@ -186,7 +186,7 @@ log_longevity_brainsize
 ```{r}
 
 summary(m)
-## The point estimate of the slope is 1.2180
+## The point estimate of the slope is 0.4045757
 
 t <- coef(summary(m))
 t <- data.frame(unlist(t))
@@ -194,11 +194,11 @@ colnames(t) <- c("Est", "SE", "t", "p")
 t
 ## The p-values (last colum of the t data frame) are really small - there is significant evidence that the slope isn't = 0 (we reject the null hypothesis)
 
-ci_m <- confint(m, level = 0.9)  # This calculates the CIs for the slope (β1) parameter.
+ci_m <- confint(m, level = 0.9)  # This calculates the CIs for the slope (β1) parameter and the intercept
 ci_m
 
 summary(n)
-## The point estimate of the slope is 0.23415
+## The point estimate of the slope is 2.470254
 
 u <- coef(summary(n))
 u <- data.frame(unlist(u))
@@ -206,23 +206,33 @@ colnames(u) <- c("Est", "SE", "t", "p")
 u
 ## The p-values (last colum of the t data frame) are really small - there is significant evidence that the slope isn't = 0 (we reject the null hypothesis)
 
-ci_n <- confint(n, level = 0.9)  # This calculates the CIs for the slope (β1) parameter.
+ci_n <- confint(n, level = 0.9)  # This calculates the CIs for the slope (β1) parameter and the intercept.
 ci_n
 
 ```
+
 ```{r}
 
+pi_m <- predict(m, newdata = data.frame(MaxLongevity_m = d$MaxLongevity_m), interval = "prediction",
+    level = 0.9) 
 
-longevity_brainsize2 <- ggplot(d, aes(MaxLongevity_m, Brain_Size_Species_Mean)) + geom_point(color = "darkgreen") + xlab("Longevity") + ylab("Brain size") + geom_smooth(method = lm, level = 0.9, colour = "red", show.legend = TRUE)+ geom_smooth(method = lm, level = 0.95, colour = "lightblue", show.legend = TRUE)
+g <- cbind(f,pi_m)
+
+
+longevity_brainsize2 <- ggplot(g, aes(MaxLongevity_m, Brain_Size_Species_Mean)) + geom_point(color = "darkgreen") + xlab("Longevity") + ylab("Brain size") + geom_smooth(method = lm, level = 0.9, colour = "blue", show.legend = TRUE) + geom_line(data = g, aes(x = MaxLongevity_m, y = lwr), colour = "red") + geom_line(data = g, aes(x = MaxLongevity_m, y = upr), colour = "red")  
 
 longevity_brainsize2
 
 
-log_longevity_brainsize2 <- ggplot(d, aes(l, b)) + geom_point(color = "darkgreen") + xlab("log(Longevity)") + ylab("log(Brain size)") + geom_smooth(method = lm, show.legend = TRUE) + geom_smooth(method = lm, level = 0.9, colour = "red", show.legend = TRUE)
+pi_n <- predict(n, newdata = data.frame(l = d$l), interval = "prediction", level = 0.9) 
+
+h <- cbind(f,pi_n)
+
+log_longevity_brainsize2 <- ggplot(h, aes(l, b)) + geom_point(color = "darkgreen") + xlab("log(Longevity)") + ylab("log(Brain size)") + geom_smooth(method = lm, level = 0.9, colour = "blue", show.legend = TRUE) + geom_line(data = h, aes(x = l, y = lwr), colour = "red") + geom_line(data = h, aes(x = l, y = upr), colour = "red")
 
 log_longevity_brainsize2
 
-## This creates plots with both the 90% and the 95% CIs. I have problems showing the legend
+## This creates plots with both the 90%  CIs. I don't know how to show the legend, help!
 ```
 ```{r}
 
