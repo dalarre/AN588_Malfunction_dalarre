@@ -254,6 +254,14 @@ pi2
 
 ```
 
+## CHALLENGES
+
+The logic for separating the 1 sample and 2 sample tests in the function was tricky. After an error R suggested me to use is.null and that worked :)
+I also had to search how to do a difference between two proportions confidence interval
+I had to spend some time figuring out how return worked
+The second part of the homework was harder for me. I couldn't predict Longevity because I used it as the predictor variable. The most difficult part was creating the PI lines in the plot. I kept getting errors because I was messing up with which variables I was calling and I switched the axes, but I ended up figuring it out. I also had trouble using geom_text. I ended up finding the function annotate which worked.
+
+
 
 
 
