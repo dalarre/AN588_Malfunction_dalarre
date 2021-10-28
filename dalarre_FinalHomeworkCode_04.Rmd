@@ -239,6 +239,7 @@ log_longevity_brainsize2 <- ggplot(h, aes(l, b)) + geom_point(color = "darkgreen
 
 log_longevity_brainsize2
 
+## I added a legend using annotate()
 ## This creates plots with both the 90%  CIs and PIs, labeled in the legend. 
 ```
 
