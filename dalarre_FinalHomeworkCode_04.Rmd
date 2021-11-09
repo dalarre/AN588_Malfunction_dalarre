@@ -136,6 +136,8 @@ z.prop.test <- function(p1, n1, p2 = NULL, n2 = NULL, p0, alternative = "two.sid
     
 ```
 
+*great work!*
+
 ## 2: Fit a simple linear regression model to predict longevity (MaxLongevity_m) measured in months from species’ brain size (Brain_Size_Species_Mean) measured in grams.
 
 ```{r}
