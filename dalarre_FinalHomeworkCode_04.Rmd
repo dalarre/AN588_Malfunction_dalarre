@@ -218,6 +218,8 @@ ci_n
 
 ```
 
+*So which of these is the interval for slope? what are your interpretation of the beta values?*
+
 ```{r}
 
 pi_m <- predict(m, newdata = data.frame(MaxLongevity_m = d$MaxLongevity_m), interval = "prediction",
@@ -264,6 +266,8 @@ pi_m2
 ## I think the logarithm model is better because the R-squared is higher and the PIs are tighter
 
 ```
+
+*This works, good job!*
 
 ## CHALLENGES
 
